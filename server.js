@@ -6,7 +6,7 @@ const FormData = require("form-data");
 const fs = require("fs");
 
 const app = express();
-const upload = multer();
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(cors());
 app.use(express.json());
@@ -30,20 +30,23 @@ app.post("/send", upload.single("photo"), async (req, res) => {
 ${message || "No description"}`;
 
     if (photo) {
-      const form = new FormData();
+        const form = new FormData();
 
-      form.append("chat_id", CHAT_ID);
-      form.append("caption", text);
-      form.append("photo", fs.createReadStream(photo.path));
+        form.append("chat_id", CHAT_ID);
+        form.append("caption", text);
+        form.append("photo", photo.buffer, {
+            filename: "photo.jpg"
+        });
 
-      await axios.post(
-        `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
-        form,
-        {
-          headers: form.getHeaders(),
-        }
-      );
-    } else {
+        await axios.post(
+            `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
+            form,
+            {
+            headers: form.getHeaders(),
+            }
+        );
+    }
+     else {
       await axios.post(
         `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
         {
