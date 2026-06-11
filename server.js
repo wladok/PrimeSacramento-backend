@@ -13,7 +13,9 @@ const CHAT_ID = "1357735944";
 
 app.post("/send", async (req, res) => {
   try {
-    const { name, phone, message } = req.body;
+    console.log("BODY:", req.body);
+
+    const { name, phone, message } = req.body || {};
 
     const text =
 `🛠️ New Request
