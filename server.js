@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 const BOT_TOKEN = "7696883936:AAGDnnhI897bdBWMELFApyplPcDmSWPEWzU";
 const CHAT_ID = "1357735944";
 
-app.post("/send", upload.none(), async (req, res) => {
+app.post("/send", upload.single("photo"), async (req, res) => {
   try {
     console.log("BODY:", req.body);
 
