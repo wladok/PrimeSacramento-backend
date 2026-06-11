@@ -1,17 +1,21 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const multer = require("multer");
+const upload = multer();
+
+
 
 const app = express();
 
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const BOT_TOKEN = "7696883936:AAGDnnhI897bdBWMELFApyplPcDmSWPEWzU";
 const CHAT_ID = "1357735944";
 
-app.post("/send", async (req, res) => {
+app.post("/send", upload.none(), async (req, res) => {
   try {
     console.log("BODY:", req.body);
 
