@@ -26,9 +26,9 @@ app.post("/send", async (req, res) => {
 ${message || "No description"}`;
 
     await axios.post(
-      'https://api.telegram.org/bot${7696883936:AAGDnnhI897bdBWMELFApyplPcDmSWPEWzU}/sendMessage',
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
-        chat_id: 1357735944,
+        chat_id: CHAT_ID,
         text: text
       }
     );
