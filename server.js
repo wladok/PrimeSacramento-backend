@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const BOT_TOKEN = "7696883936:AAEpFLtAUg6PK2f2mzI1Z_9n54i1CZwJiZ0";
+const BOT_TOKEN = "7696883936:AAGDnnhI897bdBWMELFApyplPcDmSWPEWzU";
 const CHAT_ID = "1357735944";
 
 app.post("/send", async (req, res) => {
@@ -26,7 +26,7 @@ app.post("/send", async (req, res) => {
 ${message || "No description"}`;
 
     await axios.post(
-      'https://api.telegram.org/bot${7696883936:AAEpFLtAUg6PK2f2mzI1Z_9n54i1CZwJiZ0}/sendMessage',
+      'https://api.telegram.org/bot${7696883936:AAGDnnhI897bdBWMELFApyplPcDmSWPEWzU}/sendMessage',
       {
         chat_id: 1357735944,
         text: text
