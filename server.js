@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 
 const BOT_TOKEN = process.env.BOT_TOKEN || "YOUR_BOT_TOKEN";
 const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
+console.log("TOKEN EXISTS:", !!BOT_TOKEN);
+console.log("TOKEN START:", BOT_TOKEN?.substring(0, 10));
+console.log("CHAT ID:", CHAT_ID);
 
 app.post("/send", upload.array("photos", 5), async (req, res) => {
   try {
