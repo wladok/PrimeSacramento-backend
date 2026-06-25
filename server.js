@@ -1,3 +1,5 @@
+const { Resend } = require("resend");
+
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
@@ -16,13 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const BOT_TOKEN = process.env.BOT_TOKEN || "YOUR_BOT_TOKEN";
 const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
-console.log("TOKEN EXISTS:", !!BOT_TOKEN);
-console.log("TOKEN START:", BOT_TOKEN?.substring(0, 10));
-console.log("CHAT ID:", CHAT_ID);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/send", upload.array("photos", 5), async (req, res) => {
   try {
-    const { name, phone, message } = req.body || {};
+    const { name, phone, email, message } = req.body || {};
     const photos = req.files || [];
 
     // Проверка телефона
@@ -38,6 +38,8 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 👤 Name: ${name || "Not provided"}
 
 📞 Phone: ${phone || "Not provided"}
+
+Email: ${email || "Not provided"}
 
 💬 Message:
 ${message || "No description"}`;
@@ -70,6 +72,53 @@ ${message || "No description"}`;
           }
         );
       }
+    }
+
+    if (email) {
+      await resend.emails.send({
+        from: "Prime Sacramento Home Services <info@primesacramento.com>",
+        to: email,
+        subject: "We Received Your Request",
+        html: `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            
+            <h2>Thank you for contacting us, ${name}!</h2>
+
+            <p>
+              We have received your request and our team will review it shortly.
+            </p>
+
+            <p>
+              We will contact you as soon as possible.
+            </p>
+
+            <hr>
+
+            <h3>Your Request Details:</h3>
+
+            <p>
+              <strong>Name:</strong> ${name}
+            </p>
+
+            <p>
+              <strong>Phone:</strong> ${phone}
+            </p>
+
+            <p>
+              <strong>Message:</strong><br>
+              ${message || "No description"}
+            </p>
+
+            <br>
+
+            <p>
+              Thank you,<br>
+              Prime Sacramento Home Services
+            </p>
+
+          </div>
+        `
+      });
     }
 
     res.send("Application sent successfully!");
