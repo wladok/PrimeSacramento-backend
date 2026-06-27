@@ -9,7 +9,21 @@ const FormData = require("form-data");
 const app = express();
 
 const upload = multer({
-  storage: multer.memoryStorage()
+    storage: multer.memoryStorage(),
+
+    limits: {
+        fileSize: 10 * 1024 * 1024
+    },
+
+    fileFilter: (req, file, cb) => {
+
+        if (file.mimetype.startsWith("image/")) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only image files are allowed"));
+        }
+
+    }
 });
 
 app.use(cors());
@@ -22,7 +36,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/send", upload.array("photos", 5), async (req, res) => {
   try {
-    const { name, phone, email, message } = req.body || {};
+    const { name, phone, email, service, message } = req.body || {};
     const photos = req.files || [];
 
     // Проверка телефона
@@ -33,25 +47,30 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
     }
     
     const text =
-`🛠️ New Request
+    `🛠️ New Request
 
-👤 Name: ${name || "Not provided"}
+    👤 Name: ${name || "Not provided"}
 
-📞 Phone: ${phone || "Not provided"}
+    📞 Phone: ${phone || "Not provided"}
 
-Email: ${email || "Not provided"}
+    📧 Email: ${email || "Not provided"}
 
-💬 Message:
-${message || "No description"}`;
+    🔧 Service:
+    ${service || "Not selected"}
+
+    💬 Message:
+    ${message || "No description"}`;
 
     // Отправляем текст заявки
-    await axios.post(
+    const telegramResponse = await axios.post(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
         chat_id: CHAT_ID,
         text: text
       }
     );
+
+    console.log("Telegram:", telegramResponse.data);
 
     // Отправляем все фотографии
     if (photos.length > 0) {
@@ -75,7 +94,7 @@ ${message || "No description"}`;
     }
 
     if (email) {
-      await resend.emails.send({
+      const result = await resend.emails.send({
         from: "Prime Sacramento Home Services <info@primesacramento.com>",
         to: email,
         subject: "We Received Your Request",
@@ -105,6 +124,10 @@ ${message || "No description"}`;
             </p>
 
             <p>
+              <strong>Service:</strong> ${service}
+            </p>
+
+            <p>
               <strong>Message:</strong><br>
               ${message || "No description"}
             </p>
@@ -119,10 +142,18 @@ ${message || "No description"}`;
           </div>
         `
       });
+
+      console.log(result);
+    }
+
+    if (!name || !phone || !email) {
+        return res.status(400).send("Missing required fields");
     }
 
     res.send("Application sent successfully!");
-  } catch (error) {
+  }
+  
+  catch (error) {
     console.error(
       error.response?.data ||
       error.message ||
