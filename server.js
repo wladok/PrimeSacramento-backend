@@ -57,8 +57,6 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
     const text =
     `🛠️ New Request
 
-    🚨 TEST 12345
-
     👤 Name: ${name || "Not provided"}
 
     📞 Phone: ${phone || "Not provided"}
@@ -138,6 +136,9 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 
             <p>
               <strong>Service:</strong> ${serviceType}
+            </p>
+            <p>
+              <strong>Service:</strong> ${specificService}
             </p>
 
             <p>
