@@ -35,6 +35,7 @@ const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/send", upload.array("photos", 5), async (req, res) => {
+    console.log(req.body);
   try {
     const {
       name,
