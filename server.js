@@ -36,7 +36,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/send", upload.array("photos", 5), async (req, res) => {
   try {
-    const { name, phone, email, service, message } = req.body || {};
+    const {
+      name,
+      phone,
+      email,
+      serviceType,
+      specificService,
+      message
+    } = req.body;
     const photos = req.files || [];
 
     // Проверка телефона
@@ -55,8 +62,11 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 
     📧 Email: ${email || "Not provided"}
 
-    🔧 Service:
-    ${service || "Not selected"}
+    🔧 Category:
+      ${serviceType}
+
+      🛠 Service:
+      ${specificService}
 
     💬 Message:
     ${message || "No description"}`;
