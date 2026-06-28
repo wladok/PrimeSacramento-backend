@@ -63,10 +63,10 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
     📧 Email: ${email || "Not provided"}
 
     🔧 Category:
-      ${serviceType}
+      ${serviceType || "Not provided"}
 
       🛠 Service:
-      ${specificService}
+      ${specificService || "Not provided"}
 
     💬 Message:
     ${message || "No description"}`;
@@ -134,7 +134,7 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
             </p>
 
             <p>
-              <strong>Service:</strong> ${service}
+              <strong>Service:</strong> ${serviceType}
             </p>
 
             <p>
