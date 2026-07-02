@@ -1,4 +1,3 @@
-console.log("🔥 SERVER FILE LOADED");
 const { Resend } = require("resend");
 
 const express = require("express");
@@ -194,7 +193,7 @@ app.get("/google-reviews", async (req, res) => {
       }
     );
 
-res.json(response.data);
+    res.json(response.data);
 
   } catch (err) {
     console.error(err.response?.data || err.message);
@@ -202,8 +201,6 @@ res.json(response.data);
       error: "Failed to load Google reviews"
     });
   }
-
-  console.log(err.response?.data || err.message);
 });
 
 const PORT = process.env.PORT || 3000;
