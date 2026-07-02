@@ -30,6 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const PLACE_ID = "ChIJW7QXJibXmoAR0Isl2U5MBXY";
 const BOT_TOKEN = process.env.BOT_TOKEN || "YOUR_BOT_TOKEN";
 const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -137,9 +138,6 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
             <p>
               <strong>Service:</strong> ${serviceType}
             </p>
-            <p>
-              <strong>Service:</strong> ${specificService}
-            </p>
 
             <p>
               <strong>Message:</strong><br>
@@ -175,6 +173,29 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
     );
 
     res.status(500).send("Error sending application");
+  }
+});
+
+app.get("/google-reviews", async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://places.googleapis.com/v1/places/${PLACE_ID}`,
+      {
+        headers: {
+          "X-Goog-Api-Key": process.env.GOOGLE_API_KEY,
+          "X-Goog-FieldMask":
+            "displayName,rating,userRatingCount,reviews"
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({
+      error: "Failed to load Google reviews"
+    });
   }
 });
 
