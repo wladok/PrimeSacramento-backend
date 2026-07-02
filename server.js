@@ -179,17 +179,17 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 app.get("/google-reviews", async (req, res) => {
   try {
     const response = await axios.get(
-      `https://places.googleapis.com/v1/places/${ChIJW7QXJibXmoAR0Isl2U5MBXY}`,
+      `https://places.googleapis.com/v1/places/${PLACE_ID}`,
       {
         headers: {
           "X-Goog-Api-Key": process.env.GOOGLE_API_KEY,
           "X-Goog-FieldMask":
-            "displayName,rating,userRatingCount,reviews"
+            "displayName,rating,userRatingCount,googleMapsUri"
         }
       }
     );
 
-    res.json(response.data);
+res.json(response.data);
 
   } catch (err) {
     console.error(err.response?.data || err.message);
@@ -197,6 +197,8 @@ app.get("/google-reviews", async (req, res) => {
       error: "Failed to load Google reviews"
     });
   }
+
+  console.log(err.response?.data || err.message);
 });
 
 const PORT = process.env.PORT || 3000;
