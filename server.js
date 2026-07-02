@@ -8,6 +8,10 @@ const FormData = require("form-data");
 
 const app = express();
 
+app.get("/test", (req, res) => {
+  res.send("SERVER IS WORKING");
+});
+
 const upload = multer({
     storage: multer.memoryStorage(),
 
