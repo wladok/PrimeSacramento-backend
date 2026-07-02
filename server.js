@@ -1,3 +1,4 @@
+console.log("🔥 SERVER FILE LOADED");
 const { Resend } = require("resend");
 
 const express = require("express");
