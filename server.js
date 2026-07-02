@@ -179,7 +179,7 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 app.get("/google-reviews", async (req, res) => {
   try {
     const response = await axios.get(
-      `https://places.googleapis.com/v1/places/${PLACE_ID}`,
+      `https://places.googleapis.com/v1/places/${ChIJW7QXJibXmoAR0Isl2U5MBXY}`,
       {
         headers: {
           "X-Goog-Api-Key": process.env.GOOGLE_API_KEY,
