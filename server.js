@@ -34,7 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PLACE_ID = "ChIJW7QXJibXmoAR0Isl2U5MBXY";
+const PLACE_ID = "ChIJFwWGbUbsgogRlUqxjq6Z5GU";
 const BOT_TOKEN = process.env.BOT_TOKEN || "YOUR_BOT_TOKEN";
 const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -199,41 +199,6 @@ app.get("/google-reviews", async (req, res) => {
     console.error(err.response?.data || err.message);
     res.status(500).json({
       error: "Failed to load Google reviews"
-    });
-  }
-});
-
-app.get("/find-place", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "https://places.googleapis.com/v1/places:searchNearby",
-      {
-        includedTypes: ["home_goods_store", "handyman"],
-        maxResultCount: 5,
-        locationRestriction: {
-          circle: {
-            center: {
-              latitude: 38.6311516,
-              longitude: -121.3885711
-            },
-            radius: 50
-          }
-        }
-      },
-      {
-        headers: {
-          "X-Goog-Api-Key": process.env.GOOGLE_API_KEY,
-          "X-Goog-FieldMask": "places.id,places.displayName"
-        }
-      }
-    );
-
-    res.json(response.data);
-
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({
-      error: "Search failed"
     });
   }
 });
