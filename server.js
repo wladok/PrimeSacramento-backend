@@ -203,17 +203,27 @@ app.get("/google-reviews", async (req, res) => {
   }
 });
 
-app.get("/find-place-id", async (req, res) => {
+app.get("/find-place", async (req, res) => {
   try {
     const response = await axios.post(
-      "https://places.googleapis.com/v1/places:searchText",
+      "https://places.googleapis.com/v1/places:searchNearby",
       {
-        textQuery: "Prime Sacramento Home Services 9165169530 Sacramento CA"
+        includedTypes: ["home_goods_store", "handyman"],
+        maxResultCount: 5,
+        locationRestriction: {
+          circle: {
+            center: {
+              latitude: 38.6311516,
+              longitude: -121.3885711
+            },
+            radius: 50
+          }
+        }
       },
       {
         headers: {
           "X-Goog-Api-Key": process.env.GOOGLE_API_KEY,
-          "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress"
+          "X-Goog-FieldMask": "places.id,places.displayName"
         }
       }
     );
@@ -223,7 +233,7 @@ app.get("/find-place-id", async (req, res) => {
   } catch (err) {
     console.error(err.response?.data || err.message);
     res.status(500).json({
-      error: "Failed to search place"
+      error: "Search failed"
     });
   }
 });
