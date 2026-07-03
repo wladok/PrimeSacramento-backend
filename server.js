@@ -34,7 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PLACE_ID = "ChIJFwWGbUbsgogRlUqxjq6Z5GU";
+const PLACE_ID = "ChIJW7QXJibXmoAR0Isl2U5MBXY";
 const BOT_TOKEN = process.env.BOT_TOKEN || "YOUR_BOT_TOKEN";
 const CHAT_ID = process.env.CHAT_ID || "YOUR_CHAT_ID";
 const resend = new Resend(process.env.RESEND_API_KEY);
