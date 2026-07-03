@@ -208,7 +208,7 @@ app.get("/find-place-id", async (req, res) => {
     const response = await axios.post(
       "https://places.googleapis.com/v1/places:searchText",
       {
-        textQuery: "Prime Sacramento Home Services 9168390873 Sacramento CA"
+        textQuery: "Prime Sacramento Home Services +19165169530 Sacramento CA"
       },
       {
         headers: {
