@@ -90,23 +90,25 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 
     // Отправляем все фотографии
     if (photos.length > 0) {
-      for (const photo of photos) {
-        const form = new FormData();
+      await Promise.all(
+        photos.map(photo => {
+          const form = new FormData();
 
-        form.append("chat_id", CHAT_ID);
+          form.append("chat_id", CHAT_ID);
 
-        form.append("photo", photo.buffer, {
-          filename: photo.originalname
-        });
+          form.append("photo", photo.buffer, {
+            filename: photo.originalname
+          });
 
-        await axios.post(
-          `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
-          form,
-          {
-            headers: form.getHeaders()
-          }
-        );
-      }
+          return axios.post(
+            `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
+            form,
+            {
+              headers: form.getHeaders()
+            }
+          );
+        })
+      );
     }
 
     if (email) {
