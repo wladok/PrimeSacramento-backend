@@ -88,29 +88,35 @@ app.post("/send", upload.array("photos", 5), async (req, res) => {
 
     console.log("Telegram:", telegramResponse.data);
 
-    // Отправляем все фотографии
+     // Отправляем все фотографии
     if (photos.length > 0) {
-      await Promise.all(
-        photos.map(photo => {
-          const form = new FormData();
 
-          form.append("chat_id", CHAT_ID);
+        const form = new FormData();
 
-          form.append("photo", photo.buffer, {
-            filename: photo.originalname
-          });
+        form.append("chat_id", CHAT_ID);
 
-          return axios.post(
-            `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
+        const media = photos.map((photo, index) => ({
+            type: "photo",
+            media: `attach://photo${index}`
+        }));
+
+        form.append("media", JSON.stringify(media));
+
+        photos.forEach((photo, index) => {
+            form.append(`photo${index}`, photo.buffer, {
+                filename: photo.originalname
+            });
+        });
+
+        await axios.post(
+            `https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup`,
             form,
             {
-              headers: form.getHeaders()
+                headers: form.getHeaders()
             }
-          );
-        })
-      );
+        );
     }
-
+    
     if (email) {
       const result = await resend.emails.send({
         from: "Prime Sacramento Home Services <info@primesacramento.com>",
