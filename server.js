@@ -198,7 +198,7 @@ app.post("/send", (req, res) => {
     }
   });
 
-  app.get("/google-reviews", async (req, res) => {
+  /*app.get("/google-reviews", async (req, res) => {
     try {
       const response = await axios.get(
         `https://places.googleapis.com/v1/places/${PLACE_ID}`,
@@ -219,7 +219,7 @@ app.post("/send", (req, res) => {
         error: "Failed to load Google reviews"
       });
     }
-  });
+  });*/
 });
 
 const PORT = process.env.PORT || 3000;
