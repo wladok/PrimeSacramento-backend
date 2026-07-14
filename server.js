@@ -184,6 +184,22 @@ app.post("/send", (req, res) => {
           return res.status(400).send("Missing required fields");
       }
 
+      try {
+      await axios.post(
+        process.env.GOOGLE_SCRIPT_URL,
+        {
+          name,
+          phone,
+          email,
+          serviceType,
+          specificService,
+          message
+        }
+      );
+    } catch (sheetError) {
+      console.error("Google Sheets error:", sheetError.message);
+    }  
+
       res.send("Application sent successfully!");
     }
     
