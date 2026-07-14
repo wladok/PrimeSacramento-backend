@@ -196,9 +196,13 @@ app.post("/send", (req, res) => {
           message
         }
       );
-    } catch (sheetError) {
-      console.error("Google Sheets error:", sheetError.message);
-    }  
+    } catch (err) {
+    console.error("Google Sheets Error:");
+
+    console.error(err.response?.status);
+    console.error(err.response?.data);
+    console.error(err.message);
+}
 
       res.send("Application sent successfully!");
     }
