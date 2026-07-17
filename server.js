@@ -187,7 +187,7 @@ app.post("/send", (req, res) => {
       console.log("GOOGLE URL:", process.env.GOOGLE_SCRIPT_URL);
 console.log("Sending to Google...");
 
-await axios.post(
+const response = await axios.post(
     process.env.GOOGLE_SCRIPT_URL,
     {
         name,
@@ -199,7 +199,9 @@ await axios.post(
     }
 );
 
-console.log("Google Success!");
+console.log("Google response:");
+console.log(response.status);
+console.log(response.data);
 
       res.send("Application sent successfully!");
     }
