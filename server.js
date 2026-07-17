@@ -194,8 +194,7 @@ const response = await axios.post(
         phone,
         email,
         serviceType,
-        specificService,
-        message
+        specificService
     }
 );
 
