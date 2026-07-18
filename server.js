@@ -184,10 +184,10 @@ app.post("/send", (req, res) => {
           return res.status(400).send("Missing required fields");
       }
 
-      console.log("GOOGLE URL:", process.env.GOOGLE_SCRIPT_URL);
-console.log("Sending to Google...");
-
-const response = await axios.post(
+    console.log("GOOGLE URL:", process.env.GOOGLE_SCRIPT_URL);
+    console.log("Sending to Google...");
+    
+    const response = await axios.post(
     process.env.GOOGLE_SCRIPT_URL,
     {
         name,
@@ -196,13 +196,13 @@ const response = await axios.post(
         serviceType,
         specificService
     }
-);
+    );
+    
+    console.log("Google response:");
+    console.log(response.status);
+    console.log(response.data);
 
-console.log("Google response:");
-console.log(response.status);
-console.log(response.data);
-
-      res.send("Application sent successfully!");
+    res.send("Application sent successfully!");
     }
     
     catch (error) {
